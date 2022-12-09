@@ -1,11 +1,11 @@
 {
     "version":2,
     "builds":[{
-        "src":"sever.js",
+        "src":"nodemon sever.js",
         "use":"@now/node"
     }],
     "routes":[{
         "src":"/(.*)",
-        "dest":"server.js"
+        "dest":"nodemon server.js"
     }]
 }
