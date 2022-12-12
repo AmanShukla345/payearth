@@ -16,6 +16,7 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
             name text,
             cat INTEGER,
             password text, 
+            wallet INTEGER,
             CONSTRAINT mobile_unique UNIQUE (mobile)
             )`,
         (err) => {
@@ -23,10 +24,10 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
                 // Table already created
             }else{
                 // Table just created, creating some rows
-                var insert = 'INSERT INTO user (mobile,name,cat, password) VALUES (?,?,?,?)'
-                db.run(insert, [9716863391,"admin",1,"admin123456"])
-                db.run(insert, [9716863392,"distibuter",2,"distibuter123456"])
-                db.run(insert, [9716863393,"user",3,"user123456"])
+                var insert = 'INSERT INTO user (mobile,name,cat, password,wallet) VALUES (?,?,?,?,?)'
+                db.run(insert, [9716863391,"admin",1,"admin123456",0])
+                db.run(insert, [9716863392,"distibuter",2,"distibuter123456",0])
+                db.run(insert, [9716863393,"user",3,"user123456",0])
             }
         });  
     }

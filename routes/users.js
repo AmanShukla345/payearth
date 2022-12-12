@@ -87,7 +87,7 @@ router.get('/',(req,res,next)=>{
         name: req.body.name,
         cat: req.body.cat,
         password : req.body.password,
-        email: req.body.wallet
+        wallet: req.body.wallet
     }
     var sql ='INSERT INTO user (mobile,name,cat,password,wallet) VALUES (?,?,?,?,?)'
     var params =[data.mobile,data.name, data.cat, data.password ,data.wallet]
