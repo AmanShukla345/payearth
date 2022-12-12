@@ -72,11 +72,11 @@ router.get('/',(req,res,next)=>{
     if (!req.body.cat){
         errors.push("No cat specified");
     }
-    if (!req.body.email){
-        errors.push("No email specified");
-    }
     if (!req.body.password){
         errors.push("No password specified");
+    }
+    if (!req.body.wallet){
+        errors.push("No wallet specified");
     }
     if (errors.length){
         res.status(400).json({"error":errors.join(",")});
@@ -86,11 +86,11 @@ router.get('/',(req,res,next)=>{
         mobile: req.body.mobile,
         name: req.body.name,
         cat: req.body.cat,
-        email: req.body.email,
-        password : req.body.password
+        password : req.body.password,
+        email: req.body.wallet
     }
-    var sql ='INSERT INTO user (mobile,name,cat, email, password) VALUES (?,?,?,?,?)'
-    var params =[data.mobile,data.name, data.cat,data.email, data.password]
+    var sql ='INSERT INTO user (mobile,name,cat,password,wallet) VALUES (?,?,?,?,?)'
+    var params =[data.mobile,data.name, data.cat, data.password ,data.wallet]
     db.run(sql, params, function (err, result) {
         if (err){
             res.status(400).json({"error": err.message})

@@ -30,10 +30,6 @@ router.get('/',(req,res,next)=>{
         })
       });
 });
-
-//get by mobile
-
-  //add new user
   router.post("/", (req, res, next) => {
     var errors=[]
     if (!req.body.userId){
@@ -73,75 +69,11 @@ router.get('/',(req,res,next)=>{
         })
     });
 })
-
-// update infomation
-
-router.patch("/:mobile", (req, res, next) => {
-  var data = {
-      id: req.body.id,
-      name: req.body.name,
-      cat: req.body.cat,
-      wallet: req.body.wallet,
-      password : req.body.password 
-  }
-  db.run(
-      `UPDATE user set 
-         id = COALESCE(?,id),
-         name = COALESCE(?,name), 
-         cat = COALESCE(?,cat), 
-         password = COALESCE(?,password) ,
-         wallet = COALESCE(?,wallet) 
-         WHERE mobile = ?`,
-      [data.id,data.name, data.cat, data.password,data.wallet, req.params.mobile],
-      function (err, result) {
-          if (err){
-              res.status(400).json({"error": res.message})
-              return;
-          }
-          res.json({
-              message: "success",
-              data: data,
-              changes: this.changes
-          })
-  });
-})
-//update by id
-router.patch("/updateById/:id", (req, res, next) => {
-    var data = {
-        mobile: req.body.mobile,
-        name: req.body.name,
-        cat: req.body.cat,
-        wallet: req.body.wallet,
-        password : req.body.password 
-    }
-    db.run(
-        `UPDATE user set 
-           mobile = COALESCE(?,mobile),
-           name = COALESCE(?,name), 
-           cat = COALESCE(?,cat), 
-           password = COALESCE(?,password) ,
-           wallet = COALESCE(?,wallet) 
-           WHERE id = ?`,
-        [data.mobile,data.name, data.cat, data.password,data.wallet, req.params.id],
-        function (err, result) {
-            if (err){
-                res.status(400).json({"error": res.message})
-                return;
-            }
-            res.json({
-                message: "success",
-                data: data,
-                changes: this.changes
-            })
-    });
-  })
-  
 // detele data
-
-router.delete("/:id", (req, res, next) => {
+router.delete("/:userId", (req, res, next) => {
   db.run(
-      'DELETE FROM user WHERE id = ?',
-      req.params.id,
+      'DELETE FROM transTable WHERE userId = ?',
+      req.params.userId,
       function (err, result) {
           if (err){
               res.status(400).json({"error": res.message})
