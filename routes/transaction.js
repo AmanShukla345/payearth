@@ -33,7 +33,7 @@ router.get('/',(req,res,next)=>{
 
 
 router.get("/getByMobile/:mobile_no", (req, res, next) => {
-    var sql = "select * from transTable where mobile_no= ? and userId=8 ORDER BY id DESC"
+    var sql = "select * from transTable where mobile_no= ? and userId=13 ORDER BY id DESC"
     var params = [req.params.mobile_no]
     db.all(sql, params, (err, row) => {
         if (err) {
