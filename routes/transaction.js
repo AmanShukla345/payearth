@@ -45,6 +45,19 @@ router.get("/getByMobile/:mobile_no", (req, res, next) => {
         })
       });
 });
+router.get("/getById/:id", (req, res, next) => {
+    var sql = "select * from transTable where id= ?"
+    var params = [req.params.id]
+    db.all(sql, params, (err, row) => {
+        if (err) {
+          res.status(400).json({"error":err.message});
+          return;
+        }
+        res.json({
+            "data":row
+        })
+      });
+});
   router.post("/", (req, res, next) => {
     var errors=[]
     if (!req.body.userId){
@@ -99,11 +112,59 @@ router.get("/getByMobile/:mobile_no", (req, res, next) => {
         })
     });
 })
+//update
+router.patch("/updateById/:id", (req, res, next) => {
+    var data = {
+        userId: req.body.userId,
+        amount: req.body.amount,
+        mobile_no: req.body.mobile_no,
+        status: req.body.status,
+        recharge_date : req.body.recharge_date ,
+        company_id : req.body.company_id ,
+        tnx_id : req.body.tnx_id ,
+        balence : req.body.balence 
+    }
+    db.run(
+        `UPDATE transTable set 
+        userId = COALESCE(?,userId),
+        amount = COALESCE(?,amount), 
+        mobile_no = COALESCE(?,mobile_no), 
+        status = COALESCE(?,status) ,
+        recharge_date = COALESCE(?,recharge_date) ,
+        company_id = COALESCE(?,company_id),
+        tnx_id = COALESCE(?,tnx_id),
+        balence = COALESCE(?,balence)
+           WHERE id = ?`,
+        [data.userId,data.amount, data.mobile_no, data.status,data.recharge_date,data.company_id,data.tnx_id,data.balence, req.params.id],
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({
+                message: "success",
+                data: data,
+                changes: this.changes
+            })
+    });
+  })
 // detele data
 router.delete("/:userId", (req, res, next) => {
   db.run(
       'DELETE FROM transTable WHERE userId = ?',
       req.params.userId,
+      function (err, result) {
+          if (err){
+              res.status(400).json({"error": res.message})
+              return;
+          }
+          res.json({"message":"deleted", changes: this.changes})
+  });
+})
+router.delete("/deleteById/:id", (req, res, next) => {
+  db.run(
+      'DELETE FROM transTable WHERE id = ?',
+      req.params.id,
       function (err, result) {
           if (err){
               res.status(400).json({"error": res.message})
